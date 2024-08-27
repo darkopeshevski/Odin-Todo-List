@@ -5,6 +5,7 @@ import './styles.css';
 
 const todoContent = document.querySelector('.todo-content');
 const projectContent = document.querySelector(".project-content");
+const content = document.querySelector('.content')
 
 let projects = [];
 
@@ -16,12 +17,60 @@ function Project(title) {
 
   this.title = title;
   this.todos = [];  // I will put the todos object here.
-}
+};
 
-function Todo(name) {
+function Todo(title, description, dueDate, priority) {
 
-  this.name = name;
+  this.title = title;
+  this.description = description;
+  this.dueDate = dueDate;
+  this.priority = priority;
 
+};
+
+function createModal() {
+  const modal = document.createElement('dialog');
+
+  const modalContent = document.createElement('div'); // div contentot, vo nego sve ke stavame.
+  const modalTitle = document.createElement('input');
+  const modalDescription = document.createElement('input');
+  const modalDate = document.createElement('input');
+  const modalPriority = document.createElement('select');
+
+  const optionOne = document.createElement('option');
+  const optionTwo = document.createElement('option');
+
+  optionOne.value = 'low';
+  optionOne.textContent = 'low';
+  optionTwo.value = 'high';
+  optionTwo.textContent = 'high';
+
+  modalTitle.type = 'text';
+  modalTitle.className = 'modal-title';
+  modalTitle.placeholder = 'Title';
+
+  modalDescription.type = 'text';
+  modalDescription.className = 'modal-description';
+  modalDescription.placeholder = 'Description';
+
+  modalDate.type = 'date';
+  modalDate.className = 'modal-date';
+
+  modalPriority.className = 'modal-priority';
+  modalPriority.placeholder = 'Priority';
+  modalPriority.appendChild(optionOne);
+  modalPriority.appendChild(optionTwo);
+
+
+  modalContent.appendChild(modalTitle);
+  modalContent.appendChild(modalDescription);
+  modalContent.appendChild(modalDate);
+  modalContent.appendChild(modalPriority);
+
+  modal.appendChild(modalContent);
+
+  content.appendChild(modal);
+  modal.showModal();
 }
 
 function createButton() {
@@ -98,7 +147,6 @@ function displayProjects() {
         }
       };
 
-
       if (project.todos.length != 0) {
         project.todos.forEach(todo => {
 
@@ -117,29 +165,78 @@ function displayProjects() {
 
       // 3. Ako se klikne addButton-ot, se sozdava objekt Todo, i go dodavame vo array-ot na momentalniot project koj sto sme go kliknale.
       addButton.addEventListener('click', function() {
-        const nameForTodo = prompt('The name of the todo-list: ');
+        // const nameForTodo = prompt('The name of the todo-list: ');
 
-        secondDiv.innerHTML = '';
+        const modal = document.createElement('dialog');
 
-        const toDoList = new Todo(nameForTodo);
-        project.todos.push(toDoList);
+        const modalContent = document.createElement('div'); // div contentot, vo nego sve ke stavame.
+        const modalTitle = document.createElement('input');
+        const modalDescription = document.createElement('input');
+        const modalDate = document.createElement('input');
+        const modalPriority = document.createElement('select');
+        const confirmButton = document.createElement('button');
 
-        
-        // posle dodavanjeto na todo list, treba vednas da se displejne vo secondDiv sve. Tuka treba pak forEach() valjda.
-        project.todos.forEach(todo => {
+        const optionOne = document.createElement('option');
+        const optionTwo = document.createElement('option');
 
+        optionOne.value = 'low';
+        optionOne.textContent = 'low';
+        optionTwo.value = 'high';
+        optionTwo.textContent = 'high';
 
-          const todoDiv = document.createElement('div'); // Kreiranje na todo div.
+        modalTitle.type = 'text';
+        modalTitle.className = 'modal-title';
+        modalTitle.placeholder = 'Title';
+        modalTitle.required = true;
+
+        modalDescription.type = 'text';
+        modalDescription.className = 'modal-description';
+        modalDescription.placeholder = 'Description';
+        modalDescription.required = true;
+
+        modalDate.type = 'date';
+        modalDate.className = 'modal-date';
+
+        confirmButton.textContent = 'Confirm';
+
+        modalPriority.className = 'modal-priority';
+        modalPriority.placeholder = 'Priority';
+        modalPriority.appendChild(optionOne);
+        modalPriority.appendChild(optionTwo);
+
+    
+        modalContent.appendChild(modalTitle);
+        modalContent.appendChild(modalDescription);
+        modalContent.appendChild(modalDate);
+        modalContent.appendChild(modalPriority);
+        modalContent.appendChild(confirmButton);
+
+        modal.appendChild(modalContent);
+
+        content.appendChild(modal);
+        modal.showModal();
+
+        confirmButton.addEventListener('click', function() {
+
+          secondDiv.innerHTML = '';
+          const toDoList = new Todo(modalTitle.value, modalDescription.value, modalDate.value, modalPriority.value);
+          project.todos.push(toDoList);
+
+          project.todos.forEach(todo => {
+
+            const todoDiv = document.createElement('div'); // Kreiranje na todo div.
+    
+            todoDiv.className = "todo-divs";
+            todoDiv.textContent = todo.title;
+
   
-          todoDiv.className = "todo-divs";
-          todoDiv.textContent = todo.name;
-
-          secondDiv.appendChild(todoDiv);
-          console.log('PALI'); // test
-
-
-        });
-
+            secondDiv.appendChild(todoDiv);
+            console.log('PALI'); // test
+            console.log(toDoList.title);
+            console.log(toDoList.dueDate);
+          });
+          modal.close();
+        })
       })
     });
   })
