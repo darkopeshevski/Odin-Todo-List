@@ -16,7 +16,7 @@ let secondDiv;
 function Project(title) {
 
   this.title = title;
-  this.todos = [];  // I will put the todos object here.
+  this.todos = [];  // I will put the todo objects here.
 };
 
 function Todo(title, description, dueDate, priority) {
@@ -28,7 +28,20 @@ function Todo(title, description, dueDate, priority) {
 
 };
 
-function createModal() {
+function displayTodos(project, secondDiv) {
+  project.todos.forEach(todo => {
+
+    const todoDiv = document.createElement('div'); // Kreiranje na todo div.
+
+    todoDiv.className = "todo-divs";
+    todoDiv.textContent = todo.title;
+
+    secondDiv.appendChild(todoDiv);
+    console.log('PALI'); // test
+  });
+}
+
+function createTodoModal() {
   const modal = document.createElement('dialog');
 
   const modalContent = document.createElement('div'); // div contentot, vo nego sve ke stavame.
@@ -89,6 +102,37 @@ function createModal() {
 
 }
 
+function createProjectModal() {
+  const modal = document.createElement('dialog');
+
+  const modalContent = document.createElement('div'); // div contentot, vo nego sve ke stavame.
+  const modalTitle = document.createElement('input');
+  const confirmButton = document.createElement('button');
+
+  modalTitle.type = 'text';
+  modalTitle.className = 'modal-project-title';
+  modalTitle.placeholder = 'Title';
+  
+  confirmButton.className = 'modal-project-button';
+  confirmButton.textContent = 'confirm';
+
+
+  modalContent.appendChild(modalTitle);
+  modalContent.appendChild(confirmButton);
+
+  modal.appendChild(modalContent);
+  content.appendChild(modal);
+  modal.showModal();
+
+  return {
+    modal,
+    modalContent,
+    modalTitle,
+    confirmButton
+  };
+
+}
+
 function createButton() {
   const button = document.createElement('button');
   button.className = 'button';
@@ -100,13 +144,18 @@ function createButton() {
 }
 
 function pushProject() {
-  const projectName = prompt("title of the project:");
+  // const projectName = prompt("title of the project:");
+  const newProjectModal = createProjectModal();
 
-  const newProject = new Project(projectName);
+  newProjectModal.confirmButton.addEventListener('click', function() {
 
-  projects.push(newProject);
-  console.log(projects.length); // ova mi e da proveram neso u konzola.
-  displayProjects();
+    const newProject = new Project(newProjectModal.modalTitle.value);
+
+    projects.push(newProject);
+    console.log(projects.length); // ova mi e da proveram neso u konzola.
+    displayProjects();
+    newProjectModal.modal.close();
+  })
 }
 
 function createProjectDiv() {
@@ -163,6 +212,7 @@ function displayProjects() {
         }
       };
 
+      // Displaying the todos if they exist for the clicked project.
       if (project.todos.length != 0) {
         project.todos.forEach(todo => {
 
@@ -181,28 +231,18 @@ function displayProjects() {
 
       // 3. Ako se klikne addButton-ot, se sozdava objekt Todo, i go dodavame vo array-ot na momentalniot project koj sto sme go kliknale.
       addButton.addEventListener('click', function() {
-        // const nameForTodo = prompt('The name of the todo-list: ');
 
-        const newModal = createModal();
+        const newModal = createTodoModal();
 
         newModal.confirmButton.addEventListener('click', function() {
 
           secondDiv.innerHTML = '';
+
           const toDoList = new Todo(newModal.modalTitle.value, newModal.modalDescription.value, newModal.modalDate.value, newModal.modalPriority.value);
           project.todos.push(toDoList);
 
-          project.todos.forEach(todo => {
-
-            const todoDiv = document.createElement('div'); // Kreiranje na todo div.
-    
-            todoDiv.className = "todo-divs";
-            todoDiv.textContent = todo.title;
-  
-            secondDiv.appendChild(todoDiv);
-            console.log('PALI'); // test
-            console.log(toDoList.title);
-            console.log(toDoList.dueDate);
-          });
+          displayTodos(project, secondDiv);
+          
           newModal.modal.close();
         })
       })
