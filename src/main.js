@@ -36,6 +36,7 @@ function createModal() {
   const modalDescription = document.createElement('input');
   const modalDate = document.createElement('input');
   const modalPriority = document.createElement('select');
+  const confirmButton =  document.createElement('button');
 
   const optionOne = document.createElement('option');
   const optionTwo = document.createElement('option');
@@ -53,6 +54,9 @@ function createModal() {
   modalDescription.className = 'modal-description';
   modalDescription.placeholder = 'Description';
 
+  confirmButton.className = 'modal-button';
+  confirmButton.textContent = 'confirm';
+
   modalDate.type = 'date';
   modalDate.className = 'modal-date';
 
@@ -66,11 +70,23 @@ function createModal() {
   modalContent.appendChild(modalDescription);
   modalContent.appendChild(modalDate);
   modalContent.appendChild(modalPriority);
+  modalContent.appendChild(confirmButton);
 
   modal.appendChild(modalContent);
 
   content.appendChild(modal);
   modal.showModal();
+
+  return {
+    modal,
+    modalContent,
+    modalTitle,
+    modalDescription,
+    modalDate,
+    modalPriority,
+    confirmButton
+  };
+
 }
 
 function createButton() {
@@ -153,7 +169,7 @@ function displayProjects() {
           const todoDiv = document.createElement('div'); // Kreiranje na todo div.
   
           todoDiv.className = "todo-divs";
-          todoDiv.textContent = todo.name;
+          todoDiv.textContent = todo.title;
   
           secondDiv.appendChild(todoDiv);
           console.log(project.todos.length); // test
@@ -167,59 +183,12 @@ function displayProjects() {
       addButton.addEventListener('click', function() {
         // const nameForTodo = prompt('The name of the todo-list: ');
 
-        const modal = document.createElement('dialog');
+        const newModal = createModal();
 
-        const modalContent = document.createElement('div'); // div contentot, vo nego sve ke stavame.
-        const modalTitle = document.createElement('input');
-        const modalDescription = document.createElement('input');
-        const modalDate = document.createElement('input');
-        const modalPriority = document.createElement('select');
-        const confirmButton = document.createElement('button');
-
-        const optionOne = document.createElement('option');
-        const optionTwo = document.createElement('option');
-
-        optionOne.value = 'low';
-        optionOne.textContent = 'low';
-        optionTwo.value = 'high';
-        optionTwo.textContent = 'high';
-
-        modalTitle.type = 'text';
-        modalTitle.className = 'modal-title';
-        modalTitle.placeholder = 'Title';
-        modalTitle.required = true;
-
-        modalDescription.type = 'text';
-        modalDescription.className = 'modal-description';
-        modalDescription.placeholder = 'Description';
-        modalDescription.required = true;
-
-        modalDate.type = 'date';
-        modalDate.className = 'modal-date';
-
-        confirmButton.textContent = 'Confirm';
-
-        modalPriority.className = 'modal-priority';
-        modalPriority.placeholder = 'Priority';
-        modalPriority.appendChild(optionOne);
-        modalPriority.appendChild(optionTwo);
-
-    
-        modalContent.appendChild(modalTitle);
-        modalContent.appendChild(modalDescription);
-        modalContent.appendChild(modalDate);
-        modalContent.appendChild(modalPriority);
-        modalContent.appendChild(confirmButton);
-
-        modal.appendChild(modalContent);
-
-        content.appendChild(modal);
-        modal.showModal();
-
-        confirmButton.addEventListener('click', function() {
+        newModal.confirmButton.addEventListener('click', function() {
 
           secondDiv.innerHTML = '';
-          const toDoList = new Todo(modalTitle.value, modalDescription.value, modalDate.value, modalPriority.value);
+          const toDoList = new Todo(newModal.modalTitle.value, newModal.modalDescription.value, newModal.modalDate.value, newModal.modalPriority.value);
           project.todos.push(toDoList);
 
           project.todos.forEach(todo => {
@@ -228,14 +197,13 @@ function displayProjects() {
     
             todoDiv.className = "todo-divs";
             todoDiv.textContent = todo.title;
-
   
             secondDiv.appendChild(todoDiv);
             console.log('PALI'); // test
             console.log(toDoList.title);
             console.log(toDoList.dueDate);
           });
-          modal.close();
+          newModal.modal.close();
         })
       })
     });
