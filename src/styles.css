@@ -25,6 +25,10 @@ body {
   flex: 5;
   width: 600px;
   background-color: rgb(192, 157, 225);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 .button {
@@ -37,4 +41,19 @@ body {
 .project-divs {
   border: 2px solid black;
   margin: 5px 0 5px 0;
+}
+
+.todo-holder-div {
+  width: 80%;
+}
+
+.todo-divs {
+  padding: 30px 30px 30px 30px;
+  border: 2px solid red;
+  background-color: white;
+  margin-bottom: 20px;
+}
+
+.todo-description {
+  height: 100px;
 }

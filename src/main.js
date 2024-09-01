@@ -28,13 +28,33 @@ function Todo(title, description, dueDate, priority) {
 
 };
 
-function displayTodos(project, secondDiv) {
-  project.todos.forEach(todo => {
+function displayTodos(temporaryProject, secondDiv) {
+  temporaryProject.todos.forEach(todo => {
 
     const todoDiv = document.createElement('div'); // Kreiranje na todo div.
 
+    const todoTitle = document.createElement('p');
+    const todoDescr = document.createElement('div');
+    const todoDueDate = document.createElement('div');
+    const todoPriority = document.createElement('div');
+
+    todoTitle.textContent = todo.title;
+    todoTitle.className = 'todo-title';
+
+    todoDescr.textContent = todo.description;
+    todoDescr.className = 'todo-description';
+
+    todoDueDate.textContent = todo.dueDate;
+    todoDueDate.className = 'todo-duedate';
+
+    todoPriority.textContent = todo.priority;
+    todoPriority.className = 'todo-priority';
+
     todoDiv.className = "todo-divs";
-    todoDiv.textContent = todo.title;
+    todoDiv.appendChild(todoTitle);
+    todoDiv.appendChild(todoDescr);
+    todoDiv.appendChild(todoDueDate);
+    todoDiv.appendChild(todoPriority);
 
     secondDiv.appendChild(todoDiv);
     console.log('PALI'); // test
@@ -144,7 +164,6 @@ function createButton() {
 }
 
 function pushProject() {
-  // const projectName = prompt("title of the project:");
   const newProjectModal = createProjectModal();
 
   newProjectModal.confirmButton.addEventListener('click', function() {
@@ -208,24 +227,16 @@ function displayProjects() {
       for (let i = children.length - 1; i >= 0; i--) {
         if (children[i].textContent === '+') {
           children[i].remove();
-          console.log('WORKS');
         }
       };
 
       // Displaying the todos if they exist for the clicked project.
       if (project.todos.length != 0) {
-        project.todos.forEach(todo => {
 
-          const todoDiv = document.createElement('div'); // Kreiranje na todo div.
-  
-          todoDiv.className = "todo-divs";
-          todoDiv.textContent = todo.title;
-  
-          secondDiv.appendChild(todoDiv);
-          console.log(project.todos.length); // test
+        displayTodos(project, secondDiv);
+      };
 
-        });
-      } 
+
 
       const addButton = createAddTodoButton();
 
