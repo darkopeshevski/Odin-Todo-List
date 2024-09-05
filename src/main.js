@@ -5,8 +5,9 @@ import './styles.css';
 
 const todoContent = document.querySelector('.todo-content');
 const projectContent = document.querySelector(".project-content");
-const content = document.querySelector('.content')
+const content = document.querySelector('.content');
 
+let number = 0;
 let projects = [];
 
 let firstDiv;
@@ -25,10 +26,14 @@ function Todo(title, description, dueDate, priority) {
   this.description = description;
   this.dueDate = dueDate;
   this.priority = priority;
+  this.id = number++;
 
 };
 
 function displayTodos(temporaryProject, secondDiv) {
+
+  secondDiv.innerHTML = '';
+
   temporaryProject.todos.forEach(todo => {
 
     const todoDiv = document.createElement('div'); // Kreiranje na todo div.
@@ -37,6 +42,11 @@ function displayTodos(temporaryProject, secondDiv) {
     const todoDescr = document.createElement('div');
     const todoDueDate = document.createElement('div');
     const todoPriority = document.createElement('div');
+    const deleteButton = document.createElement('button');
+
+    deleteButton.textContent = 'Delete';
+    deleteButton.className = 'todo-delete-btn';
+
 
     todoTitle.textContent = todo.title;
     todoTitle.className = 'todo-title';
@@ -56,8 +66,22 @@ function displayTodos(temporaryProject, secondDiv) {
     todoDiv.appendChild(todoDueDate);
     todoDiv.appendChild(todoPriority);
 
+    todoDiv.appendChild(deleteButton);
+
     secondDiv.appendChild(todoDiv);
     console.log('PALI'); // test
+
+    deleteButton.addEventListener('click', function() {
+
+      const index = temporaryProject.todos.findIndex(todoList => todoList.id === todo.id)
+      
+      temporaryProject.todos.splice(index, 1);
+      console.log(`index : ${index}`); //test
+      console.log(`items in todos array: ${temporaryProject.todos.length}`); //test
+
+      displayTodos(temporaryProject, secondDiv); //odnovo da displejne sve otkako sme izbrisale.
+    })
+
   });
 }
 
@@ -235,8 +259,6 @@ function displayProjects() {
 
         displayTodos(project, secondDiv);
       };
-
-
 
       const addButton = createAddTodoButton();
 
