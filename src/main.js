@@ -44,6 +44,10 @@ function displayTodos(temporaryProject, secondDiv) {
     const todoDueDate = document.createElement('div');
     const todoPriority = document.createElement('div');
     const deleteButton = document.createElement('button');
+    const editButton = document.createElement('button');
+
+    editButton.textContent = "Edit";
+    editButton.className = 'todo-edit-btn';
 
     deleteButton.textContent = 'Delete';
     deleteButton.className = 'todo-delete-btn';
@@ -69,6 +73,7 @@ function displayTodos(temporaryProject, secondDiv) {
     leftSideContent.appendChild(todoPriority);
 
     righSideContent.appendChild(deleteButton);
+    righSideContent.appendChild(editButton);
 
     todoDiv.className = "todo-divs";
     todoDiv.appendChild(leftSideContent);
@@ -87,9 +92,34 @@ function displayTodos(temporaryProject, secondDiv) {
       console.log(`items in todos array: ${temporaryProject.todos.length}`); //test
 
       displayTodos(temporaryProject, secondDiv); //odnovo da displejne sve otkako sme izbrisale.
-    })
+    });
+
+    editButton.addEventListener('click', function() {
+
+      const editTodoModal = createTodoModal();
+
+      editTodoModal.modalTitle.value = todo.title;
+      editTodoModal.modalDescription.value = todo.description;
+      editTodoModal.modalDate.value = todo.dueDate;
+
+      editTodoModal.confirmButton.addEventListener('click', function() {
+
+        todo.title = editTodoModal.modalTitle.value;
+        todo.description = editTodoModal.modalDescription.value;
+        todo.dueDate = editTodoModal.modalDate.value;
+        todo.modalPriority = editTodoModal.modalPriority.value;
+        
+        todoTitle.textContent = editTodoModal.modalTitle.value;
+        todoDescr.textContent = editTodoModal.modalDescription.value;
+        todoDueDate.textContent = editTodoModal.modalDate.value;
+        todoPriority.textContent = editTodoModal.modalPriority.value;
+
+        editTodoModal.modal.close();
+        editTodoModal.modal.remove();
+      });
+    });
   });
-}
+};
 
 function createTodoModal() {
   const modal = document.createElement('dialog');
