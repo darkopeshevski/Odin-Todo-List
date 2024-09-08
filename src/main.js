@@ -13,7 +13,6 @@ let projects = [];
 let firstDiv;
 let secondDiv;
 
-
 function Project(title) {
 
   this.title = title;
@@ -37,6 +36,8 @@ function displayTodos(temporaryProject, secondDiv) {
   temporaryProject.todos.forEach(todo => {
 
     const todoDiv = document.createElement('div'); // Kreiranje na todo div.
+    const leftSideContent = document.createElement('div');
+    const righSideContent = document.createElement('div');
 
     const todoTitle = document.createElement('p');
     const todoDescr = document.createElement('div');
@@ -46,7 +47,6 @@ function displayTodos(temporaryProject, secondDiv) {
 
     deleteButton.textContent = 'Delete';
     deleteButton.className = 'todo-delete-btn';
-
 
     todoTitle.textContent = todo.title;
     todoTitle.className = 'todo-title';
@@ -60,13 +60,19 @@ function displayTodos(temporaryProject, secondDiv) {
     todoPriority.textContent = todo.priority;
     todoPriority.className = 'todo-priority';
 
-    todoDiv.className = "todo-divs";
-    todoDiv.appendChild(todoTitle);
-    todoDiv.appendChild(todoDescr);
-    todoDiv.appendChild(todoDueDate);
-    todoDiv.appendChild(todoPriority);
+    leftSideContent.className = 'left-side-content-todo';
+    righSideContent.className = 'right-side-content-todo';
 
-    todoDiv.appendChild(deleteButton);
+    leftSideContent.appendChild(todoTitle);
+    leftSideContent.appendChild(todoDescr);
+    leftSideContent.appendChild(todoDueDate);
+    leftSideContent.appendChild(todoPriority);
+
+    righSideContent.appendChild(deleteButton);
+
+    todoDiv.className = "todo-divs";
+    todoDiv.appendChild(leftSideContent);
+    todoDiv.appendChild(righSideContent);
 
     secondDiv.appendChild(todoDiv);
     console.log('PALI'); // test
@@ -76,12 +82,12 @@ function displayTodos(temporaryProject, secondDiv) {
       const index = temporaryProject.todos.findIndex(todoList => todoList.id === todo.id)
       
       temporaryProject.todos.splice(index, 1);
+
       console.log(`index : ${index}`); //test
       console.log(`items in todos array: ${temporaryProject.todos.length}`); //test
 
       displayTodos(temporaryProject, secondDiv); //odnovo da displejne sve otkako sme izbrisale.
     })
-
   });
 }
 
@@ -90,13 +96,17 @@ function createTodoModal() {
 
   const modalContent = document.createElement('div'); // div contentot, vo nego sve ke stavame.
   const modalTitle = document.createElement('input');
-  const modalDescription = document.createElement('input');
+  const modalDescription = document.createElement('textarea');
   const modalDate = document.createElement('input');
   const modalPriority = document.createElement('select');
   const confirmButton =  document.createElement('button');
 
   const optionOne = document.createElement('option');
   const optionTwo = document.createElement('option');
+
+  modal.className = 'main-modal';
+
+  modalContent.className = 'main-div-modal-todo';
 
   optionOne.value = 'low';
   optionOne.textContent = 'low';
@@ -107,8 +117,7 @@ function createTodoModal() {
   modalTitle.className = 'modal-title';
   modalTitle.placeholder = 'Title';
 
-  modalDescription.type = 'text';
-  modalDescription.className = 'modal-description';
+  modalDescription.className = 'modal-description-todo';
   modalDescription.placeholder = 'Description';
 
   confirmButton.className = 'modal-button';
@@ -121,7 +130,6 @@ function createTodoModal() {
   modalPriority.placeholder = 'Priority';
   modalPriority.appendChild(optionOne);
   modalPriority.appendChild(optionTwo);
-
 
   modalContent.appendChild(modalTitle);
   modalContent.appendChild(modalDescription);
@@ -143,7 +151,6 @@ function createTodoModal() {
     modalPriority,
     confirmButton
   };
-
 }
 
 function createProjectModal() {
@@ -159,7 +166,6 @@ function createProjectModal() {
   
   confirmButton.className = 'modal-project-button';
   confirmButton.textContent = 'confirm';
-
 
   modalContent.appendChild(modalTitle);
   modalContent.appendChild(confirmButton);
@@ -198,8 +204,9 @@ function pushProject() {
     console.log(projects.length); // ova mi e da proveram neso u konzola.
     displayProjects();
     newProjectModal.modal.close();
+    newProjectModal.modal.remove();
   })
-}
+};
 
 function createProjectDiv() {
   const projectHolderDiv = document.createElement('div');
@@ -277,6 +284,7 @@ function displayProjects() {
           displayTodos(project, secondDiv);
           
           newModal.modal.close();
+          newModal.modal.remove();
         })
       })
     });
