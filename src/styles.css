@@ -7,6 +7,7 @@
 body {
   padding: 0px;
   margin: 0px;
+  font-family: 'Roboto', sans-serif;
 }
 
 .content {
@@ -17,8 +18,15 @@ body {
 .project-content {
   flex: 1.5;
   width: 300px;
-  background-color: aqua;
+  background-color: #f0f4f8;
   height: 100%;
+  padding: 15px;
+}
+
+.project-holder-div {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
 }
 
 .projects {
@@ -27,7 +35,7 @@ body {
 
 .todo-content {
   flex: 5;
-  background-color: rgb(192, 157, 225);
+  background-color: #fefefe;
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
@@ -49,9 +57,12 @@ body {
   display: flex;
   justify-content: space-between;
   padding: 30px;
-  border: 2px solid red;
+  border: 3.5px solid red;
   background-color: white;
   width: 100%;
+  box-shadow: 5px 5px 2.5px rgb(6 4 4 / 10%);
+  border-radius: 15px;
+  gap: 15px;
 }
 
 .left-side-content-todo {
@@ -61,20 +72,39 @@ body {
 }
 
 .right-side-content-todo {
-
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 12px;
 }
 
 .button {
-  width: 30px;
-  height: 50px;
-  margin-bottom: 30px;
+  width: 150px; /* Increased width for better visibility */
+  height: 40px;
+  background-color: #4caf50; /* Green for "Add New Project" */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #45a049; /* Darker green on hover */
 }
 
 .project-divs {
-  border: 2px solid black;
-  margin: 5px 0 5px 0;
+  border: 1px solid #d1d1d1; /* Softer gray border */
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 5px; /* Rounded corners */
+  background-color: #f0f4f8; /* Light gray-blue background */
+  color: #2e3d49; /* Dark navy blue for text */
+  cursor: pointer;
 }
 
+.project-divs:hover {
+  background-color: #e3e9ed; /* Slightly darker on hover */
+}
 
 .todo-description {
   height: 100px;
@@ -86,17 +116,137 @@ body {
 }
 
 .main-modal {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow */
+  padding: 20px;
+  background-color: white;
 }
 
 .main-div-modal-todo {
   height: 100%;
-  width: 200px;
+  width: 300px; /* Increased width for a better look */
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 10px;
+}
+
+.modal-title {
+  border: 1px solid #d1d1d1;
+  border-radius: 5px;
+  padding: 10px;
 }
 
 .modal-description-todo {
   height: 100px;
-  text-align: left;
+  border: 1px solid #d1d1d1;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.modal-date {
+  border: 1px solid #d1d1d1;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.modal-priority {
+  border: 1px solid #d1d1d1;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.modal-button, .modal-project-button {
+  background-color: #4caf50; /* Green for Confirm button */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.modal-button:hover, .modal-project-button:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+
+.todo-edit-btn {
+  background-color: #2196f3; /* Blue for Edit */
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.todo-edit-btn:hover {
+  background-color: #1976d2; /* Darker blue on hover */
+}
+
+.todo-delete-btn {
+  background-color: #ff5252; /* Red for Delete */
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.todo-delete-btn:hover {
+  background-color: #e53935; /* Darker red on hover */
+}
+
+
+.project-modal {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow */
+  padding: 20px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal-project-title {
+  border: 1px solid #d1d1d1;
+  border-radius: 5px;
+  padding: 10px;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.modal-project-button {
+  background-color: #4caf50; /* Green for Confirm button */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto;
+}
+
+.modal-project-button:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+
+.add-button {
+  background-color: #ffeb3b;
+  color: black;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 24px; /* Bigger font for "+" symbol */
+  cursor: pointer;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add shadow */
+}
+
+.add-button:hover {
+  background-color: #fdd835; /* Slightly darker yellow on hover */
+}
+
+button {
+  font-family: 'Roboto', sans-serif;
 }

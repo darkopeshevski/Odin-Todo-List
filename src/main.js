@@ -76,6 +76,10 @@ function displayTodos(temporaryProject, secondDiv) {
     righSideContent.appendChild(editButton);
 
     todoDiv.className = "todo-divs";
+    
+    // Just a small check to change the color of the todo's border according to its priority's value.
+    changeBorderColor(todo, todoDiv);
+
     todoDiv.appendChild(leftSideContent);
     todoDiv.appendChild(righSideContent);
 
@@ -107,12 +111,15 @@ function displayTodos(temporaryProject, secondDiv) {
         todo.title = editTodoModal.modalTitle.value;
         todo.description = editTodoModal.modalDescription.value;
         todo.dueDate = editTodoModal.modalDate.value;
-        todo.modalPriority = editTodoModal.modalPriority.value;
+        todo.priority = editTodoModal.modalPriority.value;
         
         todoTitle.textContent = editTodoModal.modalTitle.value;
         todoDescr.textContent = editTodoModal.modalDescription.value;
         todoDueDate.textContent = editTodoModal.modalDate.value;
         todoPriority.textContent = editTodoModal.modalPriority.value;
+
+        // Just a small check to change the color of the todo's border according to its priority's value.
+        changeBorderColor(todo, todoDiv);
 
         editTodoModal.modal.close();
         editTodoModal.modal.remove();
@@ -120,6 +127,17 @@ function displayTodos(temporaryProject, secondDiv) {
     });
   });
 };
+
+function changeBorderColor(todo, todoDiv) {
+  if (todo.priority == 'low') {
+    todoDiv.style.borderColor = 'green';
+    console.log('SHOULD BE GREEN')
+  }
+  else if (todo.priority == 'high') {
+    todoDiv.style.borderColor = 'red';
+    console.log('SHOULD BE RED');
+  };
+}
 
 function createTodoModal() {
   const modal = document.createElement('dialog');
@@ -185,6 +203,8 @@ function createTodoModal() {
 
 function createProjectModal() {
   const modal = document.createElement('dialog');
+
+  modal.className = 'project-modal';
 
   const modalContent = document.createElement('div'); // div contentot, vo nego sve ke stavame.
   const modalTitle = document.createElement('input');
@@ -298,6 +318,7 @@ function displayProjects() {
       };
 
       const addButton = createAddTodoButton();
+      addButton.className = 'add-button';
 
       // 3. Ako se klikne addButton-ot, se sozdava objekt Todo, i go dodavame vo array-ot na momentalniot project koj sto sme go kliknale.
       addButton.addEventListener('click', function() {
@@ -310,6 +331,8 @@ function displayProjects() {
 
           const toDoList = new Todo(newModal.modalTitle.value, newModal.modalDescription.value, newModal.modalDate.value, newModal.modalPriority.value);
           project.todos.push(toDoList);
+
+          console.log(toDoList); //test
 
           displayTodos(project, secondDiv);
           
